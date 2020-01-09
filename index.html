@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+        <link rel="stylesheet" href="./index.css" />
+    </head>
+    <body>
+        <audio src="./assets/bgm.m4a" loop="loop" autoplay="autoplay"></audio>
+        <div class="red-package shake" id="bg">
+            <div class="red-content">
+                <div class="text-content" id="text"></div>
+                <div class="both-content">
+                    <div class="img-content">
+                        <img src="./img/bqb/1.jpg" alt="" id="change-img" />
+                    </div>
+                    <div class="buttons">
+                        <img src="./img/send_money.png" alt="" id="send" />
+                        <img
+                            src="./img/refuse.png"
+                            alt=""
+                            class="refuse"
+                            id="refuse"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            var bg = document.getElementById("bg");
+
+            bg.onclick = function() {
+                bg.setAttribute("class", "red-package");
+                bg.style.backgroundImage = "url(./img/red-action.gif)";
+                setTimeout(function() {
+                    bg.onclick = null;
+                    showContent();
+                }, 200);
+            };
+
+            function showContent() {
+                showText(showOtherContent);
+            }
+
+            function showOtherContent() {
+                var bothContent = document.getElementsByClassName(
+                    "both-content"
+                )[0];
+                bothContent.setAttribute("id", "active");
+                bindEvent();
+            }
+
+            function showText(cb) {
+                var str =
+                    " 有些事并不因时光流逝而褪去，有些人不因不常见面而忘记，记忆里你是我永远的朋友。迎新之际，恭祝事业蒸蒸日上。";
+                var text = document.getElementById("text");
+                var index = 0;
+                var len = str.length;
+                var timer = setInterval(() => {
+                    text.innerHTML = str.slice(0, ++index);
+                    if (index == len) {
+                        clearInterval(timer);
+                        if (cb) {
+                            cb();
+                        }
+                    }
+                }, 200);
+            }
+            function bindEvent() {
+                var send = document.getElementById("send");
+                var refuse = document.getElementById("refuse");
+                var img = document.getElementById("change-img");
+                var stage = 1;
+                var paths = [
+                    "/2.jpg",
+                    "/3.jpg",
+                    "/4.jpg",
+                    "/5.jpg",
+                    "/5.gif",
+                    "/6.gif"
+                ];
+                send.onclick = function() {
+                    img.setAttribute("src", "./img/bqb/ewm.png");
+                };
+
+                refuse.onclick = function() {
+                    if (stage == 1) {
+                        img.setAttribute("src", "./img/bqb" + paths.shift());
+                        console.log(paths.length);
+                        if (paths.length == 0) {
+                            stage = 2;
+                        }
+                    } else {
+                        console.log("第二阶段");
+                        NotTouchME(refuse)
+                    }
+                };
+
+
+                function NotTouchME(refuse) {
+                    refuse.onmouseenter = function () {
+                        refuse.style.position = "fixed";
+                        refuse.style.top = parseInt(Math.random() * 1000) + "px"
+                        refuse.style.left = parseInt(Math.random() * 1000) + "px"
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
